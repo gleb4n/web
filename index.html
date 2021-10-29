@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC>
+<html>
+   <head>
+      <link href="src/Grid.css" rel="stylesheet" type="text/css">
+      <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+            <style type="text/css">
+         HTML{margin:0px;padding:0px;min-height:100%;background-color:#5597cf;color:#eee;background-image:-webkit-linear-gradient(bottom, #80b4e1, #5597cf);background-image:-moz-linear-gradient(bottom, #80b4e1, #5597cf);background-image:-ms-linear-gradient(bottom, #80b4e1, #5597cf);background-image:-o-linear-gradient(bottom, #80b4e1, #5597cf);background-image:linear-gradient(bottom, #80b4e1, #5597cf);}
+         BODY{margin:0px;padding:0px;font-family:"Droid Sans",sans-serif;-webkit-font-smoothing:antialiased;}
+         ::-webkit-scrollbar{width:12px;height:12px;}
+         ::-webkit-scrollbar-thumb{border:1px solid #B8B8B8;-webkit-border-radius:0px;border-radius:0px;background:#ccc;}
+         ::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:#eee;}
+         A{color:#eee;text-decoration:none;cursor:pointer;}
+         A:hover{text-decoration:underline;}
+         #hdr{display:block;margin:40px 0px 0px 80px;padding:0px;line-height:1.2em;font-size:28px;color:#fff;text-shadow:0px 1px 1px rgba(51, 51, 51, 0.1);}
+         #demoLinks{margin:0px 0px 0px 80px;line-height:1.5em;font-size:12px;}
+         #demoDiv{margin:20px 0px 40px 80px;padding:16px;border:1px solid #ccc;border-radius:16px;width:800px;height:360px;background-color:#eee;background-image:-webkit-linear-gradient(top, #fff 0%, rgba(255, 255, 255, 0) 2%);background-image:-moz-linear-gradient(top, #fff 0%, rgba(255, 255, 255, 0) 2%);background-image:-ms-linear-gradient(top, #fff 0%, rgba(255, 255, 255, 0) 2%);background-image:-o-linear-gradient(top, #fff 0%, rgba(255, 255, 255, 0) 2%);background-image:linear-gradient(top, #fff 0%, rgba(255, 255, 255, 0) 2%);box-shadow:1px 1px 1px rgba(51, 51, 51, 0.1);}
+         #demoGrid{width:100%;height:100%;background-color:#fff;color:#1a2731;overflow:auto;}
+         #demoTable{border-spacing:0px;border-collapse:collapse;line-height:1.5em;font-size:12px;color:#333;}
+         #demoTable TH{padding:4px 12px 4px 6px;text-align:left;border-width:0px 1px 1px 0px;border-style:solid;border-color:#ccc;background-color:#eee;height:1.5em;white-space:nowrap;}
+         #demoTable TD{padding:6px 12px 6px 6px;text-align:right;border-width:0px 0px 1px 0px;border-style:solid;border-color:#eee;height:1.5em;white-space:nowrap;}
+         #demoTableCol1{background-color:#fafafa;}
+         .txt{text-align:left !important;}
+         .num{text-align:right !important;}
+         @media print{#demoDiv,#demoGrid{width:auto;height:auto;overflow:visible;}}
+      </style>
+   </head>
+   
+   <script src = "/socket.io/socket.io.js"></script>
+   <script>
+      var socket = io();
+      function setValues() {
+         socket.emit('setValues', document.getElementById('register').value);
+         socket.emit('setValues', document.getElementById('value').value);
+         
+
+      };
+      var user;
+
+     /* function sendMessage() {
+         var msg = document.getElementById('message').value;
+         if(msg) {
+         //   socket.emit('msg', {message: msg, user: user});
+         }
+      } */    
+
+      /*function output(){
+      var socket = io();
+      socket.on('message',function(data) {       
+         console.log("type: ", typeof(data), "Data: ", data)
+              document.getElementById('hello').innerHTML = data;
+         });            
+      }*/
+      function output(){
+      var socket = io();
+      socket.on('message',function(data) { 
+      returnValues(data); 
+
+      console.log("data: ",data)  
+    
+              document.getElementById('id').innerHTML = idFind;
+              document.getElementById('date').innerHTML = dateFind;
+              document.getElementById('vr').innerHTML = vrFind;
+              document.getElementById('router').innerHTML = routerFind;
+         });            
+      }
+      function returnValues(text){
+         var key = '|';
+         var zero = 0;
+
+         idSecond = text.indexOf(key,zero)
+         idFind = text.slice(zero, idSecond);
+
+         date = text.indexOf(key, idSecond)
+         dateSecond = text.indexOf(key, date + 1)
+         dateFind = text.slice(date + 1, dateSecond)
+
+         vr = text.indexOf(key, dateSecond)
+         vrSecond = text.indexOf(key, vr + 1)
+         vrFind = text.slice(vr + 1, vrSecond)
+
+         router = text.indexOf(key, vrSecond)
+         routerSecond = text.indexOf(key, router + 1)
+         routerFind = text.slice(router + 1, routerSecond)
+         return idFind,dateFind,vrFind,routerFind
+      }
+
+      function outputRut950(){
+      var socket = io();
+      socket.on('gleb', function(data){
+         var dataData = data;
+         var dataTrue = JSON.stringify(dataData);
+         console.log("dataaa:",dataTrue);
+         //console.log("dataaa333:",dataTrue);
+
+         returnValues2(dataTrue); 
+         
+
+         document.getElementById('id2').innerHTML = idFind2;
+         document.getElementById('date2').innerHTML = dateFind2;
+         document.getElementById('vr2').innerHTML = vrFind2;
+         document.getElementById('router2').innerHTML = routerFind2;
+
+      });
+      }
+
+      function returnValues2(text){
+         var key = ',';
+         var key2 = '[';
+         var key3 = ']';
+         var key4 = '"';
+         var zero = 0;
+
+         idFirst = text.indexOf(key2,zero)
+         idSecond = text.indexOf(key,idFirst)
+         idFind2 = text.slice(idFirst+2, idSecond-1);
+
+         date = text.indexOf(key, idSecond)
+         dateSecond = text.indexOf(key, date + 1)
+         dateFind2 = text.slice(date +2 , dateSecond -1)
+
+         vr = text.indexOf(key, dateSecond)
+         vrSecond = text.indexOf(key4, vr + 2)
+         vrFind2 = text.slice(vr + 2, vrSecond)
+
+         router = text.indexOf(key, vrSecond)
+         routerSecond = text.indexOf(key, router + 1)
+         routerFind2 = text.slice(router + 2, routerSecond-2)
+         return idFind2,dateFind2,vrFind2,routerFind2
+      }
+
+     
+   </script>
+   
+      <body onload="javascript:output(), outputRut950()">
+
+      <!--<form action="/" method="post">-->
+      <h1 id="hdr">Routers Modbus Data</h1>
+      <div id="demoLinks">
+         <a href="http://www.matts411.com/post/grid/" title="Blog project page">RUT 950</a>
+          &nbsp;-&nbsp; 
+         <a href="http://github.com/mmurph211/Grid" title="GitHub">RUT 955</a>
+      </div>
+      <div id="demoDiv">
+         <div id="demoGrid">
+            <table id="demoTable">
+               <colgroup><col id="demoTableCol1"></colgroup>
+               <thead>
+                  <tr>
+                     <th><span id="demoHdr0">Router</span></th>
+                     <th class="num"><span id="demoHdr1" title="Id">Id</span></th>
+                     <th class="num"><span id="demoHdr2" title="Date">Date</span></th>
+                     <th class="num"><span id="demoHdr3" title="Variable">Variable</span></th>                    
+                  </tr>
+               </thead>
+                     <div id="sentData"></div>
+               <tbody>
+                  <tr><td id="router" class="txt"></td><td id="id"></td><td id="date"></td><td id="vr" class="txt"></td><td></tr>
+                  <tr><td id="router2" class="txt"></td><td id=id2></td><td id="date2"></td><td id="vr2"></td></tr>
+                  <tr><td><input id = "register" type = "number" name = "register" value = "" 
+                  placeholder = "Enter Register!"></td><td>
+                   <input id = "value" type = "number" name = "value" value = "" 
+                  placeholder = "Enter Value!"></td>
+                  <td><button type = "button" name = "button" onclick = "setValues()">Change variable</button></td></tr>
+               </tbody>
+            </table>
+         </div>                     
+      </div>
+      
+      <script type="text/javascript" src="src/Grid.js"></script>
+      <script type="text/javascript" src="Test/web.js"></script>
+     <script type="text/javascript">
+         (function(window, document, undefined) {
+            "use strict";
+            
+            var gridColSortTypes = ["string", "number", "number", "number"], 
+                gridColAlign = [];
+            
+            var onColumnSort = function(newIndexOrder, columnIndex, lastColumnIndex) {
+               var offset = (this.options.allowSelections && this.options.showSelectionColumn) ? 1 : 0, 
+                   doc = document;
+               
+               
+            };
+            
+            var onResizeGrid = function(newWidth, newHeight) {
+               var demoDivStyle = document.getElementById("demoDiv").style;
+               demoDivStyle.width = newWidth + "px";
+               demoDivStyle.height = newHeight + "px";
+            };
+            
+            for (var i=0, col; col=gridColSortTypes[i]; i++) {
+               gridColAlign[i] = (col === "number") ? "right" : "left";
+            }
+            
+            var myGrid = new Grid("demoGrid", {
+                  srcType : "dom", 
+                  srcData : "demoTable", 
+                  allowGridResize : true, 
+                  allowColumnResize : true, 
+                  allowClientSideSorting : true, 
+                  allowSelections : false, <!-- Выбор -->
+                  allowMultipleSelections : false, 
+                  showSelectionColumn : false, 
+                  onColumnSort : onColumnSort, 
+                  onResizeGrid : onResizeGrid, 
+                  colAlign : gridColAlign, 
+                  colBGColors : ["#fafafa"], 
+                  colSortTypes : [gridColSortTypes], 
+                  fixedCols : 1
+                });
+         })(this, this.document);
+      </script>
+   </body>
+</html>
